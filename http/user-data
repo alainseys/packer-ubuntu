@@ -1,0 +1,36 @@
+#cloud-config
+autoinstall:
+    version: 1
+    early-commands:
+        # Stop ssh for packer
+        - sudo systemctl stop ssh
+    locale: nl_BE.UTF-8
+    keyboard:
+        layout: be
+        variant: oss
+    packages: [open-vm-tools, openssh-server, net-tools, perl, open-iscsi, ntp, curl, vim, ifupdown, zip, unzip, gnupg2, software-properties-common, apt-transport-https, ca-certificates, lsb-release, python3-pip, jq]
+    network:
+       network:
+          version: 2
+          ethernets:
+              ens192:
+                  dhcp4: true
+    identity:
+        hostname: localhost
+        username: ubuntu
+        # Crypt your password using mkpasswd using the type crypt-512
+        password: "$6$mGrQpoqhlDeOKrhJ$stHZV8LJrnr3MYI0VsNIqidIc1KtvzxiOv7Hp/3HTHq9aJWncqrH6rWWluJPgjSJqJb32jq.tRcSOM2oI4bzW0"
+    ssh:
+        install-server: yes
+        allow-pw: yes
+        authorized-keys:
+        # Enter your ssh key here (this key is a sample key)
+            - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCBynpfbc4lKOBtkJaqbniynLXqTU6Muao/M1Hnj+cpfg5K8Fk2ihWuUJj6V5yvai8kEPJqbCcHTxCdv7jEyu7pK5sgw/ABK8uAzWxf60nOecheSO8eS3BHGCTuEGu6fl3+GqcNHRXTerTzlKx8YTBMyv3O02rRJcUwbjyuFm4e2NC9ePQKw2dq2QtJrnN2vOFwxO8hm0/jx8cOoKCNl6ESsq4A4w7WIerhOoPX5k4YkoqFey5HMe0SuCkHMaM/YXbhCQ4+GlOXC6FN/W04LgBTXErw0jwc/U82t13Oa7pFJaa0CbP5FqfEEI8uqDDAR50RGsTJ6j51z+5ZF8YlSeer rsa-key-20240530
+    storage:
+        layout:
+            name: direct
+    user-data:
+      disable_root: false
+    late-commands:
+      - sed -i -e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_config
+      - echo 'ansible ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
