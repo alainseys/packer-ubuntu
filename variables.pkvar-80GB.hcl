@@ -19,8 +19,8 @@ disk_eagerly_scrub          = false
 vm_disk_controller_type     = ["pvscsi"]
 vm_network_card             = "vmxnet3"
 vm_boot_wait                = "5s"
-ssh_username                = "ansible"
-ssh_password                = "n6WEbf9YZtJd2EnC"
+ssh_username                = "ubuntu"
+ssh_password                = "ubuntu" # Make sure this password matches your user-data password
 # ISO Objects
 
 #DVD Installer
